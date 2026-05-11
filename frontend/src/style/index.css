@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Inter:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+    /* các màu chinhs */
+    --color-map-bg: #F4FBFA;
+    --color-obsidian: #F7F9FB;
+    --color-obsidian-light: #DDE4E3;
+    --color-slate: #8E9AAF;
+
+    /* các màuc phụ */
+    --color-cyan-glow: #00CED1;
+    --color-sky-glow: #535F72;
+    --color-sunset: #D4A373;
+    --color-emerald: #10B981;
+
+    /* màu chữ*/
+    --color-text-primary: #161D1D;
+    --color-text-secondary: #3B4949;
+    --color-text-muted: #6B7A7A;
+    --color-text-dim: #D4DBDB;
+
+    /* màu kính*/
+    --color-glass-white: rgba(255, 255, 255, 0.7);
+    --color-glass-obsidian: rgba(242, 239, 233, 0.85);
+    --color-glass-border: rgba(107, 122, 122, 0.15);
+    --color-glass-border-bright: rgba(0, 206, 209, 0.25);
+
+    /* Bóng*/
+    --shadow-neon: 0 10px 40px rgba(0, 206, 209, 0.2);
+    --shadow-sunset: 0 10px 40px rgba(212, 163, 115, 0.2);
+    --shadow-glass: 0 30px 60px rgba(0, 0, 0, 0.12);
+    --shadow-floating: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+    /* Fonts - Premium & Modern */
+    --font-jakarta: "Plus Jakarta Sans", sans-serif;
+    --font-inter: "Inter", sans-serif;
+}
+
+@layer base {
+    body {
+        @apply bg-map-bg text-text-primary font-jakarta antialiased overflow-x-hidden selection:bg-cyan-glow selection:text-white custom-scrollbar;
+        /* Kích hoạt các tính năng font cao cấp */
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-jakarta font-bold tracking-tight text-text-primary;
+        /* Tối ưu cho Plus Jakarta Sans */
+        letter-spacing: -0.02em;
+    }
+
+    /* Global Scrollbar Reset */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-glass-border-bright) transparent;
+    }
+
+    *::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background: var(--color-glass-border-bright);
+        border-radius: 20px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+        background: var(--color-cyan-glow);
+        opacity: 0.5;
+        background-clip: content-box;
+    }
+}
+
+@utility glass-panel {
+    background-color: var(--color-glass-obsidian);
+    backdrop-filter: blur(40px);
+    border: 1px solid var(--color-glass-border);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-glass);
+}
+
+@utility glass-card {
+    background-color: var(--color-glass-white);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--color-glass-border);
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+@utility btn-primary {
+    background-color: var(--color-cyan-glow);
+    color: white;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    box-shadow: var(--shadow-neon);
+    transition: all 0.3s ease;
+}
+
+@utility page-shell {
+    min-height: 100vh;
+    background-color: var(--color-map-bg);
+    color: var(--color-text-primary);
+    padding-bottom: 8rem;
+    overflow-y: auto;
+}
+
+@utility page-container {
+    width: 100%;
+    max-width: 64rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+    .page-container {
+        padding-inline: 1.5rem;
+    }
+}
+
+@utility no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+@utility custom-scrollbar {
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.2);
+        background-clip: content-box;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@utility animate-slow-spin {
+    animation: spin 4s linear infinite;
+}
+
+@utility skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+    min-height: 12px;
+    display: block;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.15),
+        transparent);
+        animation: shimmer 1.5s infinite;
+    }
+}
+
+.maplibregl-ctrl-attrib,
+.maplibregl-ctrl-logo {
+    display: none !important;
+}
+
+.maplibregl-popup-content,
+.maplibregl-popup-content * {
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.maplibregl-popup-tip {
+    display: none !important;
+}
+
+/* Weather Animations */
+@keyframes rain-fall {
+    0% {
+        transform: translateY(-100px) rotate(15deg);
+    }
+    100% {
+        transform: translateY(110vh) rotate(15deg);
+    }
+}
+
+@keyframes cloud-float {
+    from {
+        background-position: 0% 0%;
+    }
+    to {
+        background-position: 100% 100%;
+    }
+}
