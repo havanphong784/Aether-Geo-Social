@@ -1,15 +1,19 @@
 import {AnimatePresence, motion} from "framer-motion";
-import GlassPanel from "../../components/GlassPanel.jsx";
+import {useEffect, useState} from "react";
 import {EyeIcon, EyeOffIcon, MapIcon, PowerIcon} from "lucide-react";
-import {useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import {auth, googleProvider} from "../../config/firebase.js";
+import GlassPanel from "../../components/GlassPanel.jsx";
 import {PrivateIcon, UserIcon} from "../../components/Icon.jsx";
 import ActionButton from "../../components/ActionButton.jsx";
-import {useLocation, useNavigate} from "react-router-dom";
+import {signInWithPopup} from "firebase/auth";
+import {useAuthStore} from "../../store/AuthStore.jsx";
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const {user, loading, loginWithEmail, registerWithEmail, resetPassword} = useAuthStore();
 
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState("");
@@ -19,17 +23,72 @@ export default function Login() {
   const [isAuthLoading, setIsAuthLoading] = useState(false);
   const [authStatus, setAuthStatus] = useState({type: '', message: ''});
 
-  const handleEmailAuth = () => {
+  useEffect(() => {
+    if (user && !loading) {
+      const from = location.state?.from || "/";
+      const pathname = from?.pathname ?? '/';
+      const search = from?.search ?? '';
+      const hash = from?.hash ?? '';
+      const candidate = `${pathname}${search}${hash}`;
+      const safePath = candidate.startsWith('/') ? candidate : '/';
 
-  }
+      navigate(safePath, {replace: true});
+    }
+  }, [user, loading, navigate, location.state?.from]);
 
-  const handleResetPassword = () => {
+  const handleGoogleLogin = async () => {
+    setAuthStatus({type: '', message: ''});
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error(error);
+      setAuthStatus({type: 'error', message: "Đăng nhập Google thất bại: " + error.code});
+    }
+  };
 
-  }
+  const handleEmailAuth = async (e) => {
+    e.preventDefault();
+    if (!email || !password) return;
 
-  const handleGoogleLogin = () => {
+    setAuthStatus({type: '', message: ''});
+    setIsAuthLoading(true);
+    try {
+      if (isRegister) {
+        if (!name) {
+          setAuthStatus({type: 'error', message: "Vui lòng nhập họ tên"});
+          setIsAuthLoading(false);
+          return;
+        }
+        await registerWithEmail(email, password, name);
+      } else {
+        await loginWithEmail(email, password);
+      }
+    } catch (error) {
+      console.error(error);
+      let msg = "Xác thực thất bại";
+      if (error.code === 'auth/user-not-found') msg = "Email không tồn tại";
+      if (error.code === 'auth/wrong-password') msg = "Mật khẩu không chính xác";
+      if (error.code === 'auth/email-already-in-use') msg = "Email này đã được đăng ký";
+      setAuthStatus({type: 'error', message: msg});
+    } finally {
+      setIsAuthLoading(false);
+    }
+  };
 
-  }
+  const handleResetPassword = async () => {
+    if (!email) {
+      setAuthStatus({type: 'error', message: "Vui lòng nhập email trước để nhận link."});
+      return;
+    }
+    setAuthStatus({type: '', message: ''});
+    try {
+      await resetPassword(email);
+      setAuthStatus({type: 'success', message: "Link đặt lại mật khẩu đã được gửi vào email."});
+    } catch (error) {
+      console.error(error);
+      setAuthStatus({type: 'error', message: "Lỗi gửi mail: " + error.code});
+    }
+  };
 
   return (
     <div className="h-screen w-full flex items-center justify-center bg-map-bg overflow-hidden relative">
