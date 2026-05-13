@@ -1,0 +1,135 @@
+import {useCallback, useEffect, useState} from "react";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile
+} from "firebase/auth";
+import {auth} from "../config/firebase.js";
+import {AuthContext} from "../store/AuthStore.js";
+
+const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
+
+export const AuthProvider = ({children}) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const syncWithBackend = async (firebaseUser) => {
+    try {
+      const token = await firebaseUser.getIdToken(true);
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.user;
+      }
+    } catch (error) {
+      console.error("Lỗi đồng bộ backend:", error);
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser);
+
+        const backendUser = await syncWithBackend(firebaseUser);
+        if (backendUser) {
+          setUser({
+            ...firebaseUser,
+            ...backendUser,
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            displayName: backendUser.name || firebaseUser.displayName,
+            photoURL: backendUser.avatar_url || firebaseUser.photoURL,
+          });
+        }
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const loginWithEmail = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const registerWithEmail = async (email, password, name) => {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(userCredential.user, {displayName: name});
+
+    const backendUser = await syncWithBackend(userCredential.user);
+    if (backendUser) {
+      setUser({
+        ...userCredential.user,
+        ...backendUser,
+        displayName: name,
+      });
+    }
+
+    return userCredential;
+  };
+
+  const resetPassword = (email) => {
+    return sendPasswordResetEmail(auth, email);
+  };
+
+  const logout = async () => {
+    await signOut(auth);
+  };
+
+  const [unreadAchievements, setUnreadAchievements] = useState(0);
+
+  const fetchUnreadCount = useCallback(async (userId) => {
+    try {
+      const response = await fetch(`${API_URL}/achievements/unread/${userId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setUnreadAchievements(data.count);
+      }
+    } catch (err) {
+      console.error("Lỗi fetch unread count:", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!user?.uid) return;
+
+    const timer = setTimeout(() => fetchUnreadCount(user.uid), 0);
+    const interval = setInterval(() => fetchUnreadCount(user.uid), 60000);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, [user?.uid, fetchUnreadCount]);
+
+  return (
+    <AuthContext.Provider value={{
+      user,
+      loading,
+      logout,
+      loginWithEmail,
+      registerWithEmail,
+      resetPassword,
+      unreadAchievements,
+      fetchUnreadCount,
+      setUnreadAchievements
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+

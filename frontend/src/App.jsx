@@ -1,20 +1,24 @@
 import {Route, Routes} from "react-router-dom";
-import Map from "./features/Map/Map.jsx";
-import Login from "./features/Auth/Login.jsx";
+import MapPage from "./features/Map/MapPage.jsx";
+import LoginPage from "./features/Auth/LoginPage.jsx";
 import {ProtectedRoutes} from "./layout/ProtectedRoute.jsx";
-import Discovery from "./features/Discovery/Discovery.jsx";
-import Profile from "./features/Profile/Profile.jsx";
+import DiscoveryPage from "./features/Discovery/DiscoveryPage.jsx";
+import ProfilePage from "./features/Profile/ProfilePage.jsx";
 import {AppLayout} from "./layout/AppLayout.jsx";
+import LandingPage from "./features/LandingPage/LandingPage.jsx";
 
 export default function App() {
   return <>
     <Routes>
-      <Route path="/" element={<Map/>}/>
-      <Route path="/login" element={<Login/>}/>
+      <Route path="/" element={<LandingPage/>}/>
+      <Route path="/login" element={<LoginPage/>}/>
+
+      <Route path="/map" element={<MapPage/>}/>
+
       <Route path="/discover" element={
         <ProtectedRoutes>
           <AppLayout>
-            <Discovery/>
+            <DiscoveryPage/>
           </AppLayout>
         </ProtectedRoutes>
       }/>
@@ -30,7 +34,7 @@ export default function App() {
       <Route path="/profile/:uid" element={
         <ProtectedRoutes>
           <AppLayout>
-            <Profile/>
+            <ProfilePage/>
           </AppLayout>
         </ProtectedRoutes>
       }/>
@@ -38,12 +42,12 @@ export default function App() {
       <Route path="/profile" element={
         <ProtectedRoutes>
           <AppLayout>
-            <Profile/>
+            <ProfilePage/>
           </AppLayout>
         </ProtectedRoutes>
       }/>
 
-      <Route path="*" element={<Map/>}/>
+      <Route path="*" element={<MapPage/>}/>
     </Routes>
   </>
 }

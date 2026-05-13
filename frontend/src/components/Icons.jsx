@@ -1,6 +1,8 @@
 import {
   ArrowRight,
   Bell,
+  BookMarked,
+  Brain,
   Calendar,
   Camera,
   Check,
@@ -17,11 +19,13 @@ import {
   EyeOff,
   Filter,
   Globe,
+  Globe2,
   Hash,
   Heart,
   Hotel,
   Layers,
   Loader2,
+  LocateFixed,
   Lock,
   Map,
   MapPin,
@@ -32,6 +36,7 @@ import {
   Navigation,
   Navigation2,
   Plus,
+  Radar,
   Search,
   Send,
   Share2,
@@ -45,6 +50,7 @@ import {
   TrendingUp,
   User,
   UserPlus,
+  Users,
   Utensils,
   Wind,
   X,
@@ -102,7 +108,13 @@ export {
   Snowflake as SnowIcon,
   Sparkles as SparklesIcon,
   Copy as CopyIcon,
-  ExternalLink as ExternalLinkIcon
+  ExternalLink as ExternalLinkIcon,
+  Brain as BrainIcon,
+  Users as UsersIcon,
+  Radar as RadarIcon,
+  BookMarked as BookmarkIcon,
+  LocateFixed as LocateFixedIcon,
+  Globe2 as GlobeIcon
 };
 
 

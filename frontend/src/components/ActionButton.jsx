@@ -1,5 +1,5 @@
 import {motion} from 'framer-motion';
-import {SpinnerIcon} from "./Icon.jsx";
+import {SpinnerIcon} from "./Icons.jsx";
 import {cn} from "../utils/ClassNames.js";
 
 const ActionButton = ({
@@ -32,8 +32,8 @@ const ActionButton = ({
 
   return (
     <motion.button
-      whileHover={!disabled && !loading ? { y: -2 } : {}}
-      whileTap={!disabled && !loading ? { scale: 0.95 } : {}}
+      whileHover={!disabled && !loading ? {y: -2} : {}}
+      whileTap={!disabled && !loading ? {scale: 0.95} : {}}
       className={cn(baseClasses, variants[variant] || variants.primary, sizes[size] || sizes.md, className)}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
@@ -41,7 +41,7 @@ const ActionButton = ({
       {...props}
     >
       {loading ? (
-        <SpinnerIcon size={18} className="animate-spin" />
+        <SpinnerIcon size={18} className="animate-spin"/>
       ) : (
         children
       )}

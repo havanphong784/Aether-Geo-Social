@@ -1,6 +1,6 @@
 import {useAuthStore} from "../store/AuthStore.jsx";
 import {useNavigate} from "react-router-dom";
-import {SpinnerIcon} from "../components/Icon.jsx";
+import {SpinnerIcon} from "../components/Icons.jsx";
 
 
 export const ProtectedRoutes = ({children}) => {
