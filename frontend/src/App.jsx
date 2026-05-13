@@ -4,49 +4,46 @@ import LoginPage from "./features/Auth/LoginPage.jsx";
 import {ProtectedRoutes} from "./layout/ProtectedRoute.jsx";
 import DiscoveryPage from "./features/Discovery/DiscoveryPage.jsx";
 import ProfilePage from "./features/Profile/ProfilePage.jsx";
-import {AppLayout} from "./layout/AppLayout.jsx";
 import LandingPage from "./features/LandingPage/LandingPage.jsx";
+import {AppLayout} from "./layout/AppLayout.jsx";
 
 export default function App() {
   return <>
     <Routes>
       <Route path="/" element={<LandingPage/>}/>
       <Route path="/login" element={<LoginPage/>}/>
+      <Route element={<AppLayout/>}>
 
-      <Route path="/map" element={<MapPage/>}/>
-
-      <Route path="/discover" element={
-        <ProtectedRoutes>
-          <AppLayout>
+        <Route path="/discover" element={
+          <ProtectedRoutes>
             <DiscoveryPage/>
-          </AppLayout>
-        </ProtectedRoutes>
-      }/>
+          </ProtectedRoutes>
+        }/>
 
-      <Route path="/notifications" element={
-        <ProtectedRoutes>
-          <AppLayout>
+        <Route path="/map" element={
+          <ProtectedRoutes>
+            <MapPage/>
+          </ProtectedRoutes>
+        }/>
+
+        <Route path="/notifications" element={
+          <ProtectedRoutes>
             <Notification/>
-          </AppLayout>
-        </ProtectedRoutes>
-      }/>
+          </ProtectedRoutes>
+        }/>
 
-      <Route path="/profile/:uid" element={
-        <ProtectedRoutes>
-          <AppLayout>
+        <Route path="/profile/:uid" element={
+          <ProtectedRoutes>
             <ProfilePage/>
-          </AppLayout>
-        </ProtectedRoutes>
-      }/>
+          </ProtectedRoutes>
+        }/>
 
-      <Route path="/profile" element={
-        <ProtectedRoutes>
-          <AppLayout>
+        <Route path="/profile" element={
+          <ProtectedRoutes>
             <ProfilePage/>
-          </AppLayout>
-        </ProtectedRoutes>
-      }/>
-
+          </ProtectedRoutes>
+        }/>
+      </Route>
       <Route path="*" element={<MapPage/>}/>
     </Routes>
   </>
