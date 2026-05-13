@@ -29,7 +29,6 @@ export default function Login() {
       const hash = from?.hash ?? '';
       const candidate = `${pathname}${search}${hash}`;
       const safePath = candidate.startsWith('/') ? candidate : '/map';
-
       navigate(safePath, {replace: true});
     }
   }, [user, loading, navigate, location.state?.from]);

@@ -5,7 +5,7 @@ import {SpinnerIcon} from "../components/Icons.jsx";
 
 export const ProtectedRoutes = ({children}) => {
   const user = useAuthStore(state => state.user);
-  const loading = useAuthStore(state => state.loading);
+  const {loading} = useAuthStore();
   const navigate = useNavigate();
 
   if (loading) {

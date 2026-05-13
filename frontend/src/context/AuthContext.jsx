@@ -120,6 +120,7 @@ export const AuthProvider = ({children}) => {
       user,
       loading,
       logout,
+      setLoading,
       loginWithEmail,
       registerWithEmail,
       resetPassword,
