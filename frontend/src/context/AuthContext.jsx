@@ -8,7 +8,7 @@ import {
   updateProfile
 } from "firebase/auth";
 import {auth} from "../config/firebase.js";
-import {AuthContext} from "../store/AuthStore.js";
+import {AuthContext} from "../store/AuthStore.jsx";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
 
