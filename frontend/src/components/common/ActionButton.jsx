@@ -1,6 +1,6 @@
 import {motion} from 'framer-motion';
 import {SpinnerIcon} from "./Icons.jsx";
-import {cn} from "../utils/ClassNames.js";
+import {cn} from "../../utils/ClassNames.js";
 
 const ActionButton = ({
                         children,

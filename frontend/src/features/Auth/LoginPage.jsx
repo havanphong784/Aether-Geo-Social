@@ -4,9 +4,9 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {auth, googleProvider} from "../../config/firebase";
 import {useAuthStore} from "../../store/AuthStore.jsx";
 import {AnimatePresence, motion} from "framer-motion";
-import {EyeIcon, EyeOffIcon, MapIcon, PowerIcon, PrivateIcon, UserIcon} from "../../components/Icons.jsx";
-import GlassPanel from "../../components/GlassPanel.jsx";
-import ActionButton from "../../components/ActionButton.jsx";
+import {EyeIcon, EyeOffIcon, MapIcon, PowerIcon, PrivateIcon, UserIcon} from "../../components/common/Icons.jsx";
+import GlassPanel from "../../components/common/GlassPanel.jsx";
+import ActionButton from "../../components/common/ActionButton.jsx";
 
 export default function Login() {
   const navigate = useNavigate();

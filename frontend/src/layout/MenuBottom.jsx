@@ -1,6 +1,6 @@
 import {NavLink} from "react-router-dom";
 import {motion} from "framer-motion";
-import {DiscoverIcon, NotificationIcon} from "../components/Icons.jsx";
+import {DiscoverIcon, NotificationIcon} from "../components/common/Icons.jsx";
 import {MapIcon, UserIcon} from "lucide-react";
 import {useAuthStore} from "../store/AuthStore.jsx";
 import {useMemo} from "react";

@@ -1,6 +1,6 @@
 import {memo} from 'react';
 import {motion} from 'framer-motion';
-import {cn} from "../utils/ClassNames.js";
+import {cn} from "../../utils/ClassNames.js";
 
 const variants = {
   default: 'glass-panel border-glass-border bg-white/80',
